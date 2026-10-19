@@ -1,5 +1,5 @@
 # Stage 1: download & extract krig-miner
-FROM python:3.11-slim AS builder
+FROM python:3.12-slim AS builder
 
 RUN apt-get update \
  && apt-get install -y --no-install-recommends curl tar ca-certificates \
@@ -12,13 +12,13 @@ RUN curl -fsSL -o krig.tar.gz "$KRIG_URL" \
  && tar -zxvf krig.tar.gz \
  && ls -l
 
-# Stage 2: runtime based on debian-slim for easier debugging
-FROM python:3.11-slim AS runtime
+# Stage 2: runtime based on python:3.12-slim (Debian-slim) for easier debugging
+FROM python:3.12-slim AS runtime
 
-# Install minimal runtime deps and a few debugging tools (procps, iproute2, netcat)
+# Install minimal runtime deps and a few debugging tools (procps, iproute2, netcat-openbsd)
 RUN apt-get update \
  && apt-get install -y --no-install-recommends \
-    ca-certificates procps iproute2 netcat \
+    ca-certificates procps iproute2 netcat-openbsd \
  && rm -rf /var/lib/apt/lists/*
 
 # Copy binary from builder

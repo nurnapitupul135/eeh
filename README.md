@@ -1,13 +1,13 @@
 Ringkasan
 =========
-Proyek ini membungkus krig-miner dalam image docker berbasis debian-slim dan menambahkan supervisor Python (app.py) untuk:
+Proyek ini membungkus krig-miner dalam image docker berbasis python:3.12-slim (Debian-slim) dan menambahkan supervisor Python (app.py) untuk:
 - Menyediakan healthcheck HTTP lokal (127.0.0.1:8080)
 - Menangani sinyal SIGTERM/SIGINT dengan rapi
 - Restart otomatis dengan backoff (konfigurasi lewat env)
 
 Runtime
 -------
-Image akhir sekarang menggunakan `python:3.11-slim` (Debian-slim) sebagai base runtime untuk memudahkan debugging. Beberapa utilitas debugging kecil disertakan (procps, iproute2, netcat).
+Image akhir sekarang menggunakan `python:3.12-slim` (Debian-slim) sebagai base runtime untuk memudahkan debugging. Beberapa utilitas debugging kecil disertakan (procps, iproute2, netcat-openbsd).
 
 Build
 -----

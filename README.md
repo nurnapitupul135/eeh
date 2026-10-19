@@ -1,9 +1,13 @@
 Ringkasan
 =========
-Proyek ini membungkus krig-miner dalam image docker minimal dan menambahkan supervisor Python (app.py) untuk:
+Proyek ini membungkus krig-miner dalam image docker berbasis debian-slim dan menambahkan supervisor Python (app.py) untuk:
 - Menyediakan healthcheck HTTP lokal (127.0.0.1:8080)
 - Menangani sinyal SIGTERM/SIGINT dengan rapi
 - Restart otomatis dengan backoff (konfigurasi lewat env)
+
+Runtime
+-------
+Image akhir sekarang menggunakan `python:3.11-slim` (Debian-slim) sebagai base runtime untuk memudahkan debugging. Beberapa utilitas debugging kecil disertakan (procps, iproute2, netcat).
 
 Build
 -----
@@ -23,6 +27,13 @@ docker run -d --name krig-miner \
   -e MINER_URL="stratum+ssl://prl-sg.kryptex.network:8048" \
   -e MINER_USER="prl1pjp3jd7ue653f6zyrn9ewwu7lalw538kn5w2l4lekv0g3nxqlj23qnwg6g0/olehudin" \
   krig-miner-app:1.5.9
+
+Debugging tips
+--------------
+- Untuk masuk ke container (shell), jalankan container tanpa `--read-only` dan sebagai root, misal untuk troubleshooting:
+  docker run -it --rm --entrypoint /bin/bash --user root krig-miner-app:1.5.9
+- Atau gunakan `docker exec -it --user root <container> /bin/bash` jika container sudah berjalan (perlu container yang memiliki shell dan berjalan sebagai root atau Anda menambahkan user root exec privileges).
+- Gunakan `docker logs -f krig-miner` untuk melihat output miner dan supervisor.
 
 Kesehatan & debug
 -----------------
